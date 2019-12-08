@@ -1,1 +1,39 @@
-<p>login works!</p>
+<h1 id="login-heading" [innerText]="'Login'"></h1>
+<form id="login-form" [formGroup]="loginForm">
+  <mat-form-field>
+    <input
+      matInput
+      id="app-user-name"
+      placeholder="Email"
+      type="email"
+      formControlName="username"
+      required
+    />
+    <mat-error
+      *ngIf="
+        loginForm.controls.username.hasError('email') &&
+        !loginForm.controls.username.hasError('required')
+      "
+    >
+      Please enter a valid email address
+    </mat-error>
+    <mat-error *ngIf="loginForm.controls.username.hasError('required')">
+      Email is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      id="app-password"
+      type="password"
+      placeholder="Password"
+      formControlName="password"
+      required
+    />
+    <mat-error *ngIf="loginForm.controls.password.hasError('required')">
+      Password is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" id="app-login" type="submit" [disabled]="!loginForm.dirty" [innerText]="'Login'">
+  </button>
+</form>
