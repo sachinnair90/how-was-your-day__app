@@ -3,9 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule, MatFormFieldModule, MatButtonModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 
-const exportableModules = [
-  CommonModule,
-  ReactiveFormsModule,
+const materialModules = [
   MatFormFieldModule,
   MatInputModule,
   MatButtonModule
@@ -13,11 +11,10 @@ const exportableModules = [
 
 @NgModule({
   declarations: [],
-  imports: [
-    ...exportableModules
-  ],
   exports: [
-    ...exportableModules
+    CommonModule,
+    ReactiveFormsModule,
+    ...materialModules,
   ]
 })
 export class SharedModule { }
