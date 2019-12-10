@@ -1,5 +1,20 @@
 {
   "login": {
-    "heading": "Login"
+    "heading": "Login",
+    "email": {
+      "placeholder": "Email",
+      "error": {
+        "invalid": "Please enter a valid email address",
+        "required": "Email is required"
+      }
+    },
+    "password": {
+      "placeholder": "Password",
+      "error": {
+        "required": "Password is required",
+        "minlength": "Password should contain at least 6 characters"
+      }
+    },
+    "button": "Login"
   }
 }

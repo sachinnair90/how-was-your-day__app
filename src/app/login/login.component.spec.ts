@@ -1,25 +1,50 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 
 import { LoginComponent } from './login.component';
 import { SharedModule } from '../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
+import * as translations from '../../assets/i18n/en.json';
+import { of, Observable } from 'rxjs';
+import { Injector } from '@angular/core';
+import { ILoginFormControlsInstance } from './models/login-form.model';
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(lang: string): Observable<any> {
+    return of((translations as any).default);
+  }
+}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let injector: Injector;
+  let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, BrowserAnimationsModule],
+      imports: [
+        SharedModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader }
+        }),
+      ],
       declarations: [LoginComponent]
     })
       .compileComponents();
+
+    injector = getTestBed();
+    translate = injector.get(TranslateService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    translate.use('en');
     fixture.detectChanges();
   });
 
@@ -55,8 +80,54 @@ describe('LoginComponent', () => {
   //#endregion - Structure
 
   //#region - Interactions
-  xit('should update the model values on change', () => {
+  it('should set form as invalid on error of required controls', () => {
+    const formControls = component.loginForm.controls as ILoginFormControlsInstance;
 
+    formControls.username.setValue(null);
+    formControls.password.setValue(null);
+
+    fixture.detectChanges();
+
+    expect(component.loginForm.valid).toBeFalsy();
+    expect(component.isEmailRequired).toBeTruthy();
+    expect(component.isPasswordRequired).toBeTruthy();
+  });
+
+  it('should set form as invalid on invalid email control', () => {
+    const formControls = component.loginForm.controls as ILoginFormControlsInstance;
+
+    formControls.username.setValue('acb@');
+
+    fixture.detectChanges();
+
+    expect(component.loginForm.valid).toBeFalsy();
+    expect(component.isEmailRequired).toBeFalsy();
+    expect(component.isEmailInvalid).toBeTruthy();
+  });
+
+  it('should set form as invalid on password format error', () => {
+    const formControls = component.loginForm.controls as ILoginFormControlsInstance;
+
+    formControls.password.setValue('fake');
+
+    fixture.detectChanges();
+
+    expect(component.loginForm.valid).toBeFalsy();
+    expect(component.isPasswordRequired).toBeFalsy();
+    expect(component.isPasswordFormatInvalid).toBeTruthy();
+  });
+
+  it('it should set form valid for valid values of form controls', () => {
+    const formControls = component.loginForm.controls as ILoginFormControlsInstance;
+
+    formControls.username.setValue('abc@email.com');
+    formControls.password.setValue('new-password');
+
+    expect(component.loginForm.valid).toBeTruthy();
+    expect(component.isEmailRequired).toBeFalsy();
+    expect(component.isEmailInvalid).toBeFalsy();
+    expect(component.isPasswordRequired).toBeFalsy();
+    expect(component.isPasswordFormatInvalid).toBeFalsy();
   });
   //#endregion
 });
