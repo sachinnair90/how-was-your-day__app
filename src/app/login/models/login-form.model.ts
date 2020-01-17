@@ -1,15 +1,15 @@
 import { AbstractControl } from '@angular/forms';
 
 export interface FormGroupControlsInstance {
-  [key: string]: AbstractControl;
+  [ key: string ]: AbstractControl;
 }
 
 export interface ILoginFormControls {
-  username: any;
+  email: any;
   password: any;
 }
 
 export interface ILoginFormControlsInstance extends ILoginFormControls, FormGroupControlsInstance {
-  username: AbstractControl;
+  email: AbstractControl;
   password: AbstractControl;
 }

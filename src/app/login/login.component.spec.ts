@@ -7,10 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
 import * as translations from '../../assets/i18n/en.json';
-import { of, Observable } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { Injector } from '@angular/core';
 import { ILoginFormControlsInstance } from './models/login-form.model';
-import { LoginService } from './services/login.service';
+import { LoginService, ILoginService } from './services/login.service';
+import { AuthenticatedUserInfo } from './models/authenticated-user-info.model';
+import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
+import { AppStorageService } from '../shared/services/app-storage.service';
+import { UserService, IUserService } from '../shared/services/user.service';
 
 class FakeLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
@@ -23,7 +27,8 @@ describe('Login Component', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let injector: Injector;
   let translate: TranslateService;
-  const loginService = jasmine.createSpyObj<LoginService>('LoginService', [ 'login' ]);
+  const loginService = jasmine.createSpyObj<ILoginService>('LoginService', [ 'login' ]);
+  const userService = jasmine.createSpyObj<IUserService>('UserService', [ 'setUser' ]);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,9 +41,11 @@ describe('Login Component', () => {
         }),
       ],
       declarations: [ LoginComponent ],
-      providers: [ { provide: LoginService, useValue: loginService } ]
-    })
-      .compileComponents();
+      providers: [
+        { provide: LoginService, useValue: loginService },
+        { provide: UserService, useValue: userService }
+      ]
+    }).compileComponents();
 
     injector = getTestBed();
     translate = injector.get(TranslateService);
@@ -52,10 +59,10 @@ describe('Login Component', () => {
   });
 
   //#region - Structure
-  it('renders heading, a form with username, password fields and a login button', () => {
+  it('renders heading, a form with email, password fields and a login button', () => {
     const loginHeading = (fixture.nativeElement as HTMLElement).querySelector('#login-heading');
     const loginForm = (fixture.nativeElement as HTMLElement).querySelector('#login-form');
-    const userNameField = loginForm.querySelector('#app-user-name');
+    const emailField = loginForm.querySelector('#app-email');
     const passwordField = loginForm.querySelector('#app-password');
     const loginButton = loginForm.querySelector('#app-login');
 
@@ -64,8 +71,8 @@ describe('Login Component', () => {
 
     expect(loginForm.tagName.toLowerCase()).toBe('form');
 
-    expect(userNameField.tagName.toLowerCase()).toBe('input');
-    expect(userNameField.attributes.getNamedItem('type').value).toContain('email');
+    expect(emailField.tagName.toLowerCase()).toBe('input');
+    expect(emailField.attributes.getNamedItem('type').value).toContain('email');
 
     expect(passwordField.tagName.toLowerCase()).toBe('input');
     expect(passwordField.attributes.getNamedItem('type').value).toBe('password');
@@ -75,9 +82,9 @@ describe('Login Component', () => {
     expect(loginButton.textContent).toBe('Login');
   });
 
-  it('contains a login form group with username and password form controls', () => {
+  it('contains a login form group with email and password form controls', () => {
     expect(component.loginForm).toBeDefined();
-    expect((component.loginForm as FormGroup).controls.username).toBeDefined();
+    expect((component.loginForm as FormGroup).controls.email).toBeDefined();
     expect((component.loginForm as FormGroup).controls.password).toBeDefined();
   });
   //#endregion - Structure
@@ -86,7 +93,7 @@ describe('Login Component', () => {
   it('invalidates the form on error of required controls', () => {
     const formControls = component.loginForm.controls as ILoginFormControlsInstance;
 
-    formControls.username.setValue(null);
+    formControls.email.setValue(null);
     formControls.password.setValue(null);
 
     fixture.detectChanges();
@@ -99,7 +106,7 @@ describe('Login Component', () => {
   it('invalidates the form on invalid email control', () => {
     const formControls = component.loginForm.controls as ILoginFormControlsInstance;
 
-    formControls.username.setValue('acb@');
+    formControls.email.setValue('acb@');
 
     fixture.detectChanges();
 
@@ -123,7 +130,7 @@ describe('Login Component', () => {
   it('marks the form valid when form controls have valid values', () => {
     const formControls = component.loginForm.controls as ILoginFormControlsInstance;
 
-    formControls.username.setValue('abc@email.com');
+    formControls.email.setValue('abc@email.com');
     formControls.password.setValue('new-password');
 
     expect(component.loginForm.valid).toBeTruthy();
@@ -133,21 +140,39 @@ describe('Login Component', () => {
     expect(component.isPasswordFormatInvalid).toBeFalsy();
   });
 
-  it('logs the user in with valid user credentials', () => {
-    loginService.login.and.returnValue(of(true));
+  it('shows the error message when user login failed', () => {
+    loginService.login.and.returnValue(throwError(null));
 
     const formControls = component.loginForm.controls as ILoginFormControlsInstance;
 
-    formControls.username.setValue('abc@email.com');
+    formControls.email.setValue('incorrect@email.com');
+    formControls.password.setValue('invalid-password');
+
+    component.login();
+
+    expect(component.isUserLoggedIn).toBeFalsy();
+  });
+
+  it('store token in local storage on successful authentication', () => {
+
+    const authenticatedUser = new AuthenticatedUserInfo();
+    authenticatedUser.firstName = 'dummyFirst';
+    authenticatedUser.lastName = 'dummyLastName';
+    authenticatedUser.email = 'dummy@email.com';
+    authenticatedUser.token = 'dummy-token';
+
+    loginService.login.and.returnValue(of(authenticatedUser));
+
+    const formControls = component.loginForm.controls as ILoginFormControlsInstance;
+
+    formControls.email.setValue('abc@email.com');
     formControls.password.setValue('new-password');
 
     component.login();
 
+    expect(component.user).toBe(authenticatedUser);
     expect(component.isUserLoggedIn).toBeTruthy();
-  });
-
-  xit('shows the error message when user login failed', () => {
-
+    expect(userService.setUser).toHaveBeenCalled();
   });
   //#endregion
 });

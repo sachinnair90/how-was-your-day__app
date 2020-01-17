@@ -1,48 +1,21 @@
 <h1 id="login-heading" [translate]="'login.heading'"></h1>
-<form id="login-form" [formGroup]="loginForm">
+<form id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
   <mat-form-field>
-    <input
-      matInput
-      id="app-user-name"
-      [placeholder]="'login.email.placeholder' | translate"
-      type="email"
-      formControlName="username"
-      required
-    />
+    <input matInput id="app-email" [placeholder]="'login.email.placeholder' | translate" type="email"
+      formControlName="email" required />
     <mat-error *ngIf="isEmailInvalid" [translate]="'login.email.error.invalid'">
     </mat-error>
-    <mat-error
-      *ngIf="isEmailRequired"
-      [translate]="'login.email.error.required'"
-    >
+    <mat-error *ngIf="isEmailRequired" [translate]="'login.email.error.required'">
     </mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input
-      matInput
-      id="app-password"
-      type="password"
-      [placeholder]="'login.password.placeholder' | translate"
-      formControlName="password"
-      required
-    />
-    <mat-error
-      *ngIf="isPasswordRequired"
-      [translate]="'login.password.error.required' | translate"
-    >
+    <input matInput id="app-password" type="password" [placeholder]="'login.password.placeholder' | translate"
+      formControlName="password" required />
+    <mat-error *ngIf="isPasswordRequired" [translate]="'login.password.error.required' | translate">
     </mat-error>
-    <mat-error
-      *ngIf="isPasswordFormatInvalid"
-      [translate]="'login.password.error.minlength' | translate"
-    >
+    <mat-error *ngIf="isPasswordFormatInvalid" [translate]="'login.password.error.minlength' | translate">
     </mat-error>
   </mat-form-field>
-  <button
-    mat-raised-button
-    color="primary"
-    id="app-login"
-    type="submit"
-    [disabled]="!loginForm.dirty"
-    [innerText]="'login.button' | translate"
-  ></button>
+  <button mat-raised-button color="primary" id="app-login" type="submit" [disabled]="!loginForm.dirty"
+    [innerText]="'login.button' | translate"></button>
 </form>

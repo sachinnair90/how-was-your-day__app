@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ILoginFormControls, ILoginFormControlsInstance } from './models/login-form.model';
-import { LoginService } from './services/login.service';
+import { ILoginService, LoginService } from './services/login.service';
 import { UserCredentials } from './models/user-credentials.model';
+import { AuthenticatedUserInfo } from './models/authenticated-user-info.model';
+import { IUserService, UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { UserCredentials } from './models/user-credentials.model';
 })
 export class LoginComponent implements OnInit {
   public formControls: ILoginFormControls = {
-    username: [ '', [ Validators.required, Validators.email ] ],
+    email: [ '', [ Validators.required, Validators.email ] ],
     password: [ '', [ Validators.required, Validators.minLength(6) ] ]
   };
   public get isPasswordRequired() {
@@ -22,18 +24,22 @@ export class LoginComponent implements OnInit {
       !this.isPasswordRequired;
   }
   public get isEmailRequired() {
-    return (this.loginForm.controls as ILoginFormControlsInstance).username.hasError('required');
+    return (this.loginForm.controls as ILoginFormControlsInstance).email.hasError('required');
   }
   public get isEmailInvalid() {
-    return (this.loginForm.controls as ILoginFormControlsInstance).username.hasError('email') &&
+    return (this.loginForm.controls as ILoginFormControlsInstance).email.hasError('email') &&
       !this.isEmailRequired;
   }
 
   public isUserLoggedIn: boolean;
+  public user: AuthenticatedUserInfo;
 
   public loginForm: FormGroup = this.fb.group(this.formControls);
 
-  constructor(private fb: FormBuilder, public loginService: LoginService) { }
+  constructor(
+    private fb: FormBuilder,
+    @Inject(LoginService) private loginService: ILoginService,
+    @Inject(UserService) private userService: IUserService) { }
 
   ngOnInit() { }
 
@@ -44,11 +50,14 @@ export class LoginComponent implements OnInit {
     }
 
     const userCredentials = new UserCredentials();
-    userCredentials.username = (this.loginForm.controls as ILoginFormControlsInstance).username.value;
+    userCredentials.email = (this.loginForm.controls as ILoginFormControlsInstance).email.value;
     userCredentials.password = (this.loginForm.controls as ILoginFormControlsInstance).password.value;
 
     return this.loginService.login(userCredentials)
-      .subscribe(isUserLoggedIn => this.isUserLoggedIn = isUserLoggedIn, error => this.isUserLoggedIn = error);
+      .subscribe((user: AuthenticatedUserInfo) => {
+        this.user = user;
+        this.isUserLoggedIn = true;
+        this.userService.setUser(user);
+      }, _ => this.isUserLoggedIn = false);
   }
-
 }

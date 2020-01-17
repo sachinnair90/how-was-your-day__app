@@ -4,7 +4,7 @@
 import * as urls from './sub-configs/app-urls.json';
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:5000/',
+  baseUrl: 'https://localhost:5001/',
   urls: (urls as any).default
 };
 
