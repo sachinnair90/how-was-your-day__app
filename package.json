@@ -9,7 +9,7 @@
     "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ci": "npm i puppeteer@2.0.0 && npm run test:ci && ng build --prod"
+    "build:ci": "npm i puppeteer@2.0.0 && npm run test:ci && ng build --prod"
   },
   "private": true,
   "dependencies": {
