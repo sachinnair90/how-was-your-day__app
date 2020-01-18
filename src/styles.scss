@@ -1,1 +1,128 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+// Optional
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/utilities/display";
+@import "../node_modules/bootstrap/scss/utilities/flex";
+@import "../node_modules/bootstrap/scss/utilities/spacing";
+@import "../node_modules/bootstrap/scss/utilities/sizing";
+@import "../node_modules/bootstrap/scss/grid";
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$md-hwyd-secondary: (
+  50: #fcfcea,
+  100: #f9f9cc,
+  200: #f5f5aa,
+  300: #f0f087,
+  400: #eded6e,
+  500: #eaea54,
+  600: #e7e74d,
+  700: #e4e443,
+  800: #e1e13a,
+  900: #dbdb29,
+  A100: #ffffff,
+  A200: #ffffe6,
+  A400: #ffffb3,
+  A700: #ffff9a,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000
+  )
+);
+
+$md-hwyd-primary: (
+  50: #fdefe8,
+  100: #fbd7c5,
+  200: #f8bd9f,
+  300: #f5a379,
+  400: #f28f5c,
+  500: #f07b3f,
+  600: #ee7339,
+  700: #ec6831,
+  800: #e95e29,
+  900: #e54b1b,
+  A100: #ffffff,
+  A200: #ffebe5,
+  A400: #ffc3b3,
+  A700: #ffae99,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$how-was-your-day-app-primary: mat-palette($md-hwyd-primary, 500, A700, 900);
+$how-was-your-day-app-accent: mat-palette($md-hwyd-secondary, 500, A700, 900);
+
+// The warn palette is optional (defaults to red).
+$how-was-your-day-app-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$how-was-your-day-app-theme: mat-light-theme(
+  $how-was-your-day-app-primary,
+  $how-was-your-day-app-accent,
+  $how-was-your-day-app-warn
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($how-was-your-day-app-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100vh;
+  margin: 0;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #ebb43b;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Varela Round", sans-serif;
+}

@@ -1,16 +1,27 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: (http: HttpClient) => new TranslateHttpLoader(http),
+            deps: [ HttpClient ]
+          }
+        }),
       ],
       declarations: [
         AppComponent
-      ],
+      ]
     }).compileComponents();
   }));
 
@@ -20,16 +31,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'how-was-your-day-app'`, () => {
+  it(`should have a router-outlet defined`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('how-was-your-day-app');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('how-was-your-day-app app is running!');
+    const appRouterOutlet = (fixture.nativeElement as HTMLElement).querySelector('router-outlet');
+    expect(appRouterOutlet).toBeDefined();
   });
 });
