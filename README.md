@@ -1,6 +1,6 @@
 # HowWasYourDayApp
 
-[![](https://github.com/sachinnair90/how-was-your-day__app/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/sachinnair90/how-was-your-day__app/actions)
+[![Build](https://github.com/sachinnair90/how-was-your-day__app/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/sachinnair90/how-was-your-day__app/actions)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
