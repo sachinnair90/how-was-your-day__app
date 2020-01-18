@@ -1,6 +1,6 @@
 # HowWasYourDayApp
 
-[![build & test status](https://github.com/sachinnair90/how-was-your-day__app/workflows/Build%20%26%20Test/badge.svg)](https://github.com/sachinnair90/how-was-your-day__app/actions)
+[![build status](https://github.com/sachinnair90/how-was-your-day__app/workflows/Build/badge.svg)](https://github.com/sachinnair90/how-was-your-day__app/actions)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
