@@ -23,10 +23,10 @@
     "@angular/router": "~8.2.14",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "bootstrap": "^4.4.1",
     "lz-string": "^1.4.4",
     "ngx-webstorage-service": "^4.1.0",
     "rxjs": "~6.5.4",
-    "service": "^0.1.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

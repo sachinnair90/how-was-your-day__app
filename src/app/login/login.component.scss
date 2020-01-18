@@ -1,0 +1,12 @@
+.login {
+  &-content {
+    height: 100vh;
+  }
+
+  &-form-holder {
+    min-width: 70%;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 0.25rem;
+  }
+}
