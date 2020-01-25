@@ -27,11 +27,11 @@ export class AppStorageService implements IAppStorageService {
     this.storageService.set(key, compressedString);
   }
 
-  public getItem(key: string): string {
+  public getItem(key: string): any {
     const compressedValue = this.storageService.get(key);
 
     const decompressedValue = lz.decompress(compressedValue);
 
-    return decompressedValue;
+    return JSON.parse(decompressedValue);
   }
 }

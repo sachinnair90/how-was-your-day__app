@@ -1,1 +1,19 @@
-<p>mood works!</p>
+<div class="container mood-view">
+  <div class="row mood-content">
+    <h1 [translate]="'mood.title'"></h1>
+    <div class="mood-wrapper">
+      <div *ngFor="let mood of moods">
+        <div class="mood">
+          <img
+            class="mood__image"
+            src="{{
+              '../../../assets/img/' + mood.name.toLocaleLowerCase() + '.svg'
+            }}"
+            [alt]="mood.name"
+          />
+          <span class="mood__name" [innerText]="mood.name"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

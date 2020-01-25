@@ -32,7 +32,7 @@ describe('App Storage Service', () => {
 
   it('should get the item from local storage', () => {
 
-    storageService.get.and.returnValue(lz.compress('dummy-value'));
+    storageService.get.and.returnValue(lz.compress(JSON.stringify('dummy-value')));
 
     service.getItem('dummy');
 

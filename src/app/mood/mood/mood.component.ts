@@ -13,8 +13,7 @@ export class MoodComponent implements OnInit {
   constructor(
     @Inject(MoodService) private moodService: IMoodService) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.moodService.getMoods().subscribe(x => this.moods = x);
   }
-
 }

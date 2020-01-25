@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ILoginFormControls, ILoginFormControlsInstance } from './models/login-form.model';
-import { ILoginService, LoginService } from './services/login.service';
+import { IAuthService, AuthService } from '../shared/services/auth.service';
 import { UserCredentials } from './models/user-credentials.model';
 import { AuthenticatedUserInfo } from './models/authenticated-user-info.model';
 import { IUserService, UserService } from '../shared/services/user.service';
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    @Inject(LoginService) private loginService: ILoginService,
+    @Inject(AuthService) private loginService: IAuthService,
     @Inject(UserService) private userService: IUserService,
     @Inject(TokenService) private tokenService: ITokenService,
     private router: Router
