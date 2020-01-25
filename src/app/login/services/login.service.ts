@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core'
-import { Observable, of } from 'rxjs'
-import { map, catchError } from 'rxjs/operators'
-import { HttpClient, HttpResponse } from '@angular/common/http'
-import { UserCredentials } from '../models/user-credentials.model'
-import { getUrl } from '../../shared/utilities'
-import { environment } from '../../../environments/environment'
-import { AuthenticatedUserInfo } from '../models/authenticated-user-info.model'
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { UserCredentials } from '../models/user-credentials.model';
+import { getUrl } from '../../shared/utilities';
+import { environment } from '../../../environments/environment';
+import { AuthenticatedUserInfo } from '../models/authenticated-user-info.model';
 
 export interface ILoginService {
   login(userCredentials: UserCredentials): Observable<AuthenticatedUserInfo>;

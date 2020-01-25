@@ -5,6 +5,8 @@ import { ILoginService, LoginService } from './services/login.service';
 import { UserCredentials } from './models/user-credentials.model';
 import { AuthenticatedUserInfo } from './models/authenticated-user-info.model';
 import { IUserService, UserService } from '../shared/services/user.service';
+import { ITokenService, TokenService } from '../shared/services/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +41,10 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     @Inject(LoginService) private loginService: ILoginService,
-    @Inject(UserService) private userService: IUserService) { }
+    @Inject(UserService) private userService: IUserService,
+    @Inject(TokenService) private tokenService: ITokenService,
+    private router: Router
+  ) { }
 
   ngOnInit() { }
 
@@ -58,6 +63,9 @@ export class LoginComponent implements OnInit {
         this.user = user;
         this.isUserLoggedIn = true;
         this.userService.setUser(user);
+        this.tokenService.setToken(user.token);
+
+        this.router.navigate([ '/mood' ]);
       }, _ => this.isUserLoggedIn = false);
   }
 }

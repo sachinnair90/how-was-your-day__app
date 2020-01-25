@@ -4,7 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LoginService } from './login.service';
 import { getUrl } from '../../shared/utilities';
 import { environment } from '../../../environments/environment';
-import { of } from 'rxjs';
 import { AuthenticatedUserInfo } from '../models/authenticated-user-info.model';
 
 describe('Login Service', () => {
@@ -48,7 +47,7 @@ describe('Login Service', () => {
       let actualUser: AuthenticatedUserInfo;
       service.login({ email: 'fakeUser@abc.com', password: 'fakePassword' }).subscribe(user => {
         actualUser = user;
-      });
+      }, error => console.log(error.message));
 
       httpMock.expectOne(getUrl(environment, LoginService.LOGIN_URL_STUB), 'Login user request')
         .flush(null, { status: 401, statusText: 'Not Authorized' });

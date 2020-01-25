@@ -20,77 +20,11 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
-$md-hwyd-secondary: (
-  50: #fcfcea,
-  100: #f9f9cc,
-  200: #f5f5aa,
-  300: #f0f087,
-  400: #eded6e,
-  500: #eaea54,
-  600: #e7e74d,
-  700: #e4e443,
-  800: #e1e13a,
-  900: #dbdb29,
-  A100: #ffffff,
-  A200: #ffffe6,
-  A400: #ffffb3,
-  A700: #ffff9a,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #000000,
-    700: #000000,
-    800: #000000,
-    900: #000000,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000
-  )
-);
-
-$md-hwyd-primary: (
-  50: #fdefe8,
-  100: #fbd7c5,
-  200: #f8bd9f,
-  300: #f5a379,
-  400: #f28f5c,
-  500: #f07b3f,
-  600: #ee7339,
-  700: #ec6831,
-  800: #e95e29,
-  900: #e54b1b,
-  A100: #ffffff,
-  A200: #ffebe5,
-  A400: #ffc3b3,
-  A700: #ffae99,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #000000,
-    700: #000000,
-    800: #000000,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000
-  )
-);
-
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$how-was-your-day-app-primary: mat-palette($md-hwyd-primary, 500, A700, 900);
-$how-was-your-day-app-accent: mat-palette($md-hwyd-secondary, 500, A700, 900);
+$how-was-your-day-app-primary: mat-palette($mat-blue, A700, A100, 900);
+$how-was-your-day-app-accent: mat-palette($mat-lime, 300, A100, 700);
 
 // The warn palette is optional (defaults to red).
 $how-was-your-day-app-warn: mat-palette($mat-red);
@@ -117,7 +51,18 @@ body {
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-outer-container {
+  background: linear-gradient(-45deg, #cefff1, #ace7ef, #a6acec, #a56cc1);
+  background-size: 400% 400%;
+  animation: change 10s ease-in-out infinite;
+}
+
+.app-outer-container--texture {
+  background: url("./assets/img/regal.png");
   background-color: #ebb43b;
+  background-blend-mode: luminosity;
 }
 
 h1,
@@ -125,4 +70,18 @@ h2,
 h3,
 h4 {
   font-family: "Varela Round", sans-serif;
+}
+
+@keyframes change {
+  0% {
+    background-position: 0 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
 }
