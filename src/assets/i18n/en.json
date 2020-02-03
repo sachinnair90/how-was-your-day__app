@@ -16,5 +16,10 @@
       }
     },
     "button": "Login"
+  },
+  "mood": {
+    "title": "How did your day go?",
+    "button": "Save",
+    "comments": "Comments"
   }
 }

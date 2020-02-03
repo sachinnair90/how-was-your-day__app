@@ -10,11 +10,11 @@ import * as translations from '../../assets/i18n/en.json';
 import { of, Observable, throwError } from 'rxjs';
 import { Injector } from '@angular/core';
 import { ILoginFormControlsInstance } from './models/login-form.model';
-import { LoginService, ILoginService } from './services/login.service';
+import { AuthService, IAuthService } from '../shared/services/auth.service';
 import { AuthenticatedUserInfo } from './models/authenticated-user-info.model';
-import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
-import { AppStorageService } from '../shared/services/app-storage.service';
 import { UserService, IUserService } from '../shared/services/user.service';
+import { ITokenService, TokenService } from '../shared/services/token.service';
+import { Router } from '@angular/router';
 
 class FakeLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
@@ -27,8 +27,11 @@ describe('Login Component', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let injector: Injector;
   let translate: TranslateService;
-  const loginService = jasmine.createSpyObj<ILoginService>('LoginService', [ 'login' ]);
+
+  const loginService = jasmine.createSpyObj<IAuthService>('LoginService', [ 'login' ]);
   const userService = jasmine.createSpyObj<IUserService>('UserService', [ 'setUser' ]);
+  const tokenService = jasmine.createSpyObj<ITokenService>('TokenService', [ 'setToken' ]);
+  const router = jasmine.createSpyObj<Router>('Router', [ 'navigate' ]);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -42,8 +45,10 @@ describe('Login Component', () => {
       ],
       declarations: [ LoginComponent ],
       providers: [
-        { provide: LoginService, useValue: loginService },
-        { provide: UserService, useValue: userService }
+        { provide: AuthService, useValue: loginService },
+        { provide: UserService, useValue: userService },
+        { provide: TokenService, useValue: tokenService },
+        { provide: Router, useValue: router }
       ]
     }).compileComponents();
 
@@ -153,7 +158,7 @@ describe('Login Component', () => {
     expect(component.isUserLoggedIn).toBeFalsy();
   });
 
-  it('store token in local storage on successful authentication', () => {
+  it('store token and user in local storage on successful authentication', () => {
 
     const authenticatedUser = new AuthenticatedUserInfo();
     authenticatedUser.firstName = 'dummyFirst';
@@ -173,6 +178,8 @@ describe('Login Component', () => {
     expect(component.user).toBe(authenticatedUser);
     expect(component.isUserLoggedIn).toBeTruthy();
     expect(userService.setUser).toHaveBeenCalled();
+    expect(tokenService.setToken).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalled();
   });
   //#endregion
 });

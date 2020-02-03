@@ -5,7 +5,7 @@ import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-transla
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-describe('AppComponent', () => {
+describe('App Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [

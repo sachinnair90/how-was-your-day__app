@@ -2,24 +2,28 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import { AuthenticatedUserInfo } from '../../login/models/authenticated-user-info.model';
-import { AppStorageService } from './app-storage.service';
+import { AppStorageService, IAppStorageService } from './app-storage.service';
 
-describe('UserService', () => {
-  const storageService = jasmine.createSpyObj<AppStorageService>('AppStorageService', [ 'setItem' ]);
+describe('User Service', () => {
+  const storageService = jasmine.createSpyObj<IAppStorageService>('AppStorageService', [ 'setItem' ]);
 
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      { provide: AppStorageService, useValue: storageService }
-    ]
-  }));
+  let service: UserService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AppStorageService, useValue: storageService }
+      ]
+    });
+
+    service = TestBed.get(UserService);
+  });
 
   it('should be created', () => {
-    const service: UserService = TestBed.get(UserService);
     expect(service).toBeTruthy();
   });
 
   it('should store the user', () => {
-    const service: UserService = TestBed.get(UserService);
 
     const user = new AuthenticatedUserInfo();
     user.email = 'foo@bar.com';
@@ -30,6 +34,7 @@ describe('UserService', () => {
     service.setUser(user);
 
     expect(storageService.setItem).toHaveBeenCalled();
+
     expect(service.user).toBe(user);
   });
 });

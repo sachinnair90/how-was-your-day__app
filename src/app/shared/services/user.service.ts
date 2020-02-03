@@ -12,6 +12,10 @@ export interface IUserService {
 export class UserService implements IUserService {
   private userInfo: AuthenticatedUserInfo;
 
+  constructor(
+    @Inject(AppStorageService) private storageService: IAppStorageService
+  ) { }
+
   public get user(): AuthenticatedUserInfo {
     return this.userInfo;
   }
@@ -20,8 +24,5 @@ export class UserService implements IUserService {
     this.userInfo = user;
 
     this.storageService.setItem(AppStorageService.STORAGE_KEYS.USER, user);
-    this.storageService.setItem(AppStorageService.STORAGE_KEYS.TOKEN, user.token);
   }
-
-  constructor(@Inject(AppStorageService) private storageService: IAppStorageService) { }
 }

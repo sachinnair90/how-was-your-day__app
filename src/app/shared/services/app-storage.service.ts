@@ -4,6 +4,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 export interface IAppStorageService {
   setItem(key: string, value: object | string | number | Date | boolean): void;
+  getItem(key: string): object | string | number | Date | boolean;
 }
 
 @Injectable({
@@ -24,5 +25,17 @@ export class AppStorageService implements IAppStorageService {
     const compressedString = lz.compress(stringValue);
 
     this.storageService.set(key, compressedString);
+  }
+
+  public getItem(key: string): any {
+    const compressedValue = this.storageService.get(key);
+
+    if (!compressedValue) {
+      return null;
+    }
+
+    const decompressedValue = lz.decompress(compressedValue);
+
+    return JSON.parse(decompressedValue);
   }
 }

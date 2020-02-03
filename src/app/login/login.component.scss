@@ -4,9 +4,10 @@
   }
 
   &-form-holder {
-    min-width: 70%;
+    min-width: 50%;
     background-color: white;
-    padding: 3rem;
-    border-radius: 0.25rem;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0.25rem 0.25rem 1.125rem -0.25rem rgba(0, 0, 0, 0.5);
   }
 }
