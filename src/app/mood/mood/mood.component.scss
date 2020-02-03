@@ -32,6 +32,7 @@
 
     &__image {
       height: 6rem;
+      padding: 0.5rem;
 
       &:hover {
         animation: bounce 1s cubic-bezier(0.4, 0, 1, 1);
@@ -45,6 +46,32 @@
       margin-top: 1rem;
       font-size: 1.5rem;
       text-transform: capitalize;
+    }
+
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    input[type="radio"] + svg {
+      transition: all 0.2s;
+    }
+
+    input:hover + img,
+    input:checked + img,
+    input:focus + img {
+      border-radius: 1.5rem;
+      background-color: gold;
+    }
+
+    input:checked ~ span {
+      border-radius: 0.5rem;
+      border-bottom: 0.5rem brown solid;
+    }
+
+    &__button {
+      width: 6rem;
+      height: 4rem;
     }
   }
 

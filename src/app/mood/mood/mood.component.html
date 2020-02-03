@@ -1,19 +1,22 @@
 <div class="container mood-view">
-  <div class="row mood-content">
-    <h1 [translate]="'mood.title'"></h1>
-    <div class="mood-wrapper">
-      <div *ngFor="let mood of moods">
-        <div class="mood">
-          <img
-            class="mood__image"
-            src="{{
+  <section class="row mood-content">
+    <h1 id="mood-heading" [translate]="'mood.title'"></h1>
+    <form id="mood-form" [formGroup]="moodForm" class="d-flex align-items-end flex-column mt-4">
+      <div class="mood-wrapper">
+        <label *ngFor="let mood of moods" [for]="'mood-' + mood.name.toLowerCase() + 'RadioButton'" class="mood">
+          <input type="radio" [id]="'mood-' + mood.name.toLowerCase() + 'RadioButton'" [value]="mood.name"
+            formControlName="moodSelector" />
+          <img class="mood__image" src="{{
               '../../../assets/img/' + mood.name.toLocaleLowerCase() + '.svg'
-            }}"
-            [alt]="mood.name"
-          />
+            }}" [alt]="mood.name" />
           <span class="mood__name" [innerText]="mood.name"></span>
-        </div>
+        </label>
       </div>
-    </div>
-  </div>
+      <mat-form-field class="mt-4 w-100">
+        <textarea id="mood-comments" matInput [placeholder]="'mood.comments' | translate"></textarea>
+      </mat-form-field>
+      <button class="mt-3 mood__button" mat-raised-button color="primary" id="mood-submit" type="submit"
+        [disabled]="!moodForm.dirty" [innerText]="'mood.button' | translate"></button>
+    </form>
+  </section>
 </div>

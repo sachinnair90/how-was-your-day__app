@@ -30,6 +30,10 @@ export class AppStorageService implements IAppStorageService {
   public getItem(key: string): any {
     const compressedValue = this.storageService.get(key);
 
+    if (!compressedValue) {
+      return null;
+    }
+
     const decompressedValue = lz.decompress(compressedValue);
 
     return JSON.parse(decompressedValue);

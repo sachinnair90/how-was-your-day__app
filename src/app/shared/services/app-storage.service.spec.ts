@@ -34,8 +34,16 @@ describe('App Storage Service', () => {
 
     storageService.get.and.returnValue(lz.compress(JSON.stringify('dummy-value')));
 
-    service.getItem('dummy');
+    const result = service.getItem('dummy');
 
-    expect(storageService.get).toHaveBeenCalled();
+    expect(result).toBe('dummy-value');
+  });
+
+  it('should return null if there is no value with given key', () => {
+    storageService.get.and.returnValue(undefined);
+
+    const result = service.getItem('dummy');
+
+    expect(result).toBeNull();
   });
 });

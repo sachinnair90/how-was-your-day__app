@@ -28,14 +28,14 @@ describe('Mood Service', () => {
   it('should get all available moods', () => {
     const expectedMoods: Array<Mood> = [
       {
-        Id: 1,
-        Name: 'mood1',
-        Description: 'mood description 1'
+        id: 1,
+        name: 'mood1',
+        description: 'mood description 1'
       },
       {
-        Id: 2,
-        Name: 'mood2',
-        Description: 'mood description 2'
+        id: 2,
+        name: 'mood2',
+        description: 'mood description 2'
       }
     ];
 
